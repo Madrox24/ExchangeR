@@ -9,29 +9,57 @@
 import UIKit
 
 class CurrencyTableViewController: UITableViewController {
+    
+    var code: String!
+    var currencyName: String!
+    var table: String!
+    var currencyTable: CurrencyDetails? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.title = currencyName
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        getData(fromDate: "2020-01-20", toDate: "2020-01-25")
     }
+    
+    func getData(fromDate: String, toDate: String) {
+        
+        let url = URL(string: "http://api.nbp.pl/api/exchangerates/rates/\(table!)/\(code!)/\(fromDate)/\(toDate)")
+        URLSession.shared.dataTask(with:url!, completionHandler: {(data, response, error) in
+            guard let data = data, error == nil else { return }
 
-    // MARK: - Table view data source
+            do {
+                let decoder = JSONDecoder()
+                let table = try decoder.decode(CurrencyDetails.self, from: data)
+                print(table)
+                
+                DispatchQueue.main.async {
+                    self.currencyTable = table
+                    self.tableView.reloadData()
+                }
+                
+            } catch let error {
+                print(error)
+            }
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+        }).resume()
+        
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
+        if let rateDetails = currencyTable?.rates[indexPath.row] {
+            cell.textLabel?.text = "1 \(code!) = \(rateDetails.mid) PLN"
+            cell.detailTextLabel?.text = rateDetails.effectiveDate
+        }
+        return cell
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        if let currency = currencyTable {
+            return currency.rates.count
+        } else {
+            return 0
+        }
     }
-
-    
-
 }

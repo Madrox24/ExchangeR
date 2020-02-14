@@ -204,11 +204,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="wje-7e-h53">
-                                <rect key="frame" x="0.0" y="28" width="375" height="43.666667938232422"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="71" id="wje-7e-h53">
+                                <rect key="frame" x="0.0" y="28" width="375" height="71"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="wje-7e-h53" id="X7T-nr-U9A">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.666667938232422"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="71"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -218,11 +218,11 @@
                             <outlet property="delegate" destination="HWW-74-Cnm" id="txr-Wp-dXz"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="aDI-ny-ScS"/>
+                    <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="aDI-ny-ScS"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vmm-hd-2cG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="361" y="101"/>
+            <point key="canvasLocation" x="360.80000000000001" y="100.49261083743843"/>
         </scene>
     </scenes>
 </document>

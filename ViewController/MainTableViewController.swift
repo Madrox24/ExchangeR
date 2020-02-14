@@ -43,7 +43,9 @@ class MainTableViewController: UITableViewController {
             if let indexPath = tableView.indexPathForSelectedRow {
                 let destinationController = segue.destination as! CurrencyTableViewController
                 
-                destinationController.navigationBar.tit
+                destinationController.code = currencyTable[0].rates[indexPath.row].code
+                destinationController.currencyName = currencyTable[0].rates[indexPath.row].currency.firstUppercased
+                destinationController.table = currencyTable[0].table
             }
         }
     }
@@ -69,14 +71,14 @@ class MainTableViewController: UITableViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: "SegmentAB", for: indexPath) as! SegmentABTableViewCell
             cell.name.text = rates.currency.firstUppercased
             cell.code.text = rates.code
-            cell.midValue.text = "1 \(rates.code) = \(rates.mid!) zł"
+            cell.midValue.text = "1 \(rates.code) = \(rates.mid!) PLN"
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "SegmentC", for: indexPath) as! SegmentCTableViewCell
             cell.name.text = rates.currency.firstUppercased
             cell.code.text = rates.code
-            cell.bidLabel.text = "Bid: \(rates.bid!) zł"
-            cell.askLabel.text = "Ask: \(rates.ask!) zł"
+            cell.bidLabel.text = "Bid: \(rates.bid!) PLN"
+            cell.askLabel.text = "Ask: \(rates.ask!) PLN"
             return cell
         }
         
