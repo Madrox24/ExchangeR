@@ -14,13 +14,51 @@ class CurrencyTableViewController: UITableViewController {
     var currencyName: String!
     var table: String!
     var currencyTable: CurrencyDetails? = nil
+    
+    let startDatePicker = UIDatePicker()
+    let endDatePicker = UIDatePicker()
 
+    @IBOutlet weak var startDateButton: UIButton!
+    @IBOutlet weak var endDateButton: UIButton!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = currencyName
 
-        getData(fromDate: "2020-01-20", toDate: "2020-01-25")
+        getData(fromDate: "2020-02-07", toDate: "2020-02-14")
+        
+        startDatePicker.maximumDate = Date()
+        startDatePicker.datePickerMode = .date
+        endDatePicker.maximumDate = Date()
+        endDatePicker.datePickerMode = .date
     }
+    
+    @IBAction func didTapStartDate(_ sender: UIButton) {
+
+        let dateChooserAlert = UIAlertController(title: "Choose date", message: nil, preferredStyle: .actionSheet)
+        
+        switch sender.tag {
+        case 1:
+            dateChooserAlert.view.addSubview(startDatePicker)
+            dateChooserAlert.addAction(UIAlertAction(title: "Done", style: .cancel, handler: { action in
+                self.startDateButton.titleLabel?.text = "From: \(self.startDatePicker.date)"
+            }))
+        case 2:
+            dateChooserAlert.view.addSubview(endDatePicker)
+            endDatePicker.minimumDate = startDatePicker.date
+            dateChooserAlert.addAction(UIAlertAction(title: "Done", style: .cancel, handler: { action in
+                self.endDateButton.titleLabel?.text = "To: \(self.endDatePicker.date)"
+            }))
+        default:
+            break
+        }
+        
+        let height: NSLayoutConstraint = NSLayoutConstraint(item: dateChooserAlert.view, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.1, constant: 300)
+        dateChooserAlert.view.addConstraint(height)
+        self.present(dateChooserAlert, animated: true, completion: nil)
+    }
+    
     
     func getData(fromDate: String, toDate: String) {
         
@@ -51,6 +89,7 @@ class CurrencyTableViewController: UITableViewController {
         if let rateDetails = currencyTable?.rates[indexPath.row] {
             cell.textLabel?.text = "1 \(code!) = \(rateDetails.mid) PLN"
             cell.detailTextLabel?.text = rateDetails.effectiveDate
+            cell.detailTextLabel?.textColor = .gray
         }
         return cell
     }
