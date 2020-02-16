@@ -30,10 +30,17 @@ class CurrencyTableViewController: UITableViewController {
         super.viewDidLoad()
         navigationItem.title = currencyName
 
+        prepareDatePickers()
+    }
+    
+    func prepareDatePickers() {
         dateFormatter.dateFormat = "yyyy-MM-dd"
-        getData(fromDate: "2020-02-07", toDate: "2020-02-14")
         
         startDatePicker.datePickerMode = .date
+        endDatePicker.datePickerMode = .date
+        
+        startDatePicker.maximumDate = Date()
+        endDatePicker.maximumDate = Date()
         
         let startDateTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapDate(_:)))
         startDatePickerView.addGestureRecognizer(startDateTapGesture)
@@ -42,7 +49,20 @@ class CurrencyTableViewController: UITableViewController {
     }
     
     @IBAction func didTapShowResults(_ sender: Any) {
-        print("OK")
+
+        if startDateLabel.text == "Select date" || endDateLabel.text == "Select date" {
+            alert(message: "Please, select dates!")
+        } else if startDatePicker.date <= endDatePicker.date {
+            
+            let startDateString = self.dateFormatter.string(from: self.startDatePicker.date)
+            let endDateString = self.dateFormatter.string(from: self.endDatePicker.date)
+    
+            getData(fromDate: startDateString, toDate: endDateString)
+            
+        } else if startDatePicker.date > endDatePicker.date {
+            alert(message: "Please, correct end date!")
+        }
+        
     }
     
     @objc func didTapDate(_ sender: UITapGestureRecognizer? = nil) {
@@ -72,6 +92,7 @@ class CurrencyTableViewController: UITableViewController {
         
         let height: NSLayoutConstraint = NSLayoutConstraint(item: dateChooserAlert.view!, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.1, constant: 300)
         dateChooserAlert.view.addConstraint(height)
+        
         self.present(dateChooserAlert, animated: true, completion: nil)
         
     }
@@ -94,6 +115,17 @@ class CurrencyTableViewController: UITableViewController {
                 
             } catch let error {
                 print(error)
+                if let httpResponse = response as? HTTPURLResponse {
+                    var resp = ""
+                    if httpResponse.statusCode == 404 {
+                        resp = "No data found"
+                    } else if httpResponse.statusCode == 400 {
+                        resp = "Invalid date range"
+                    } else {
+                        resp = "Unknown error"
+                    }
+                    self.alert(message: resp)
+                }
             }
 
         }).resume()
