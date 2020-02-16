@@ -10,10 +10,10 @@ import UIKit
 
 class CurrencyTableViewController: UITableViewController {
     
-    var code: String!
+    var currencyCode: String!
     var currencyName: String!
-    var table: String!
-    var currencyTable: CurrencyDetails? = nil
+    var tableLetter: String!
+    var currencyTable: CurrencyDetails? = nil //lista z całą historią waluty, pobrana z serwera
     
     let startDatePicker = UIDatePicker()
     let endDatePicker = UIDatePicker()
@@ -31,7 +31,9 @@ class CurrencyTableViewController: UITableViewController {
         navigationItem.title = currencyName
 
         prepareDatePickers()
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "Reload", style: .done, target: self, action: #selector(self.didTapShowResults(_:)))
     }
+    
     
     func prepareDatePickers() {
         dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -51,16 +53,17 @@ class CurrencyTableViewController: UITableViewController {
     @IBAction func didTapShowResults(_ sender: Any) {
 
         if startDateLabel.text == "Select date" || endDateLabel.text == "Select date" {
+            //gdy nie wybrano żadnej daty
             alert(message: "Please, select dates!")
+        } else if startDatePicker.date > endDatePicker.date {
+            //gdy data startowa jest późniejsza od końcowej
+            alert(message: "Please, correct end date!")
         } else if startDatePicker.date <= endDatePicker.date {
-            
+
             let startDateString = self.dateFormatter.string(from: self.startDatePicker.date)
             let endDateString = self.dateFormatter.string(from: self.endDatePicker.date)
-    
+        
             getData(fromDate: startDateString, toDate: endDateString)
-            
-        } else if startDatePicker.date > endDatePicker.date {
-            alert(message: "Please, correct end date!")
         }
         
     }
@@ -69,6 +72,8 @@ class CurrencyTableViewController: UITableViewController {
         
         let dateChooserAlert = UIAlertController(title: "Choose date", message: nil, preferredStyle: .actionSheet)
 
+        
+        //tag 1 - data początkowa, tag 2 - data końcowa
         switch sender?.view?.tag {
         case 1:
             dateChooserAlert.view.addSubview(startDatePicker)
@@ -90,6 +95,7 @@ class CurrencyTableViewController: UITableViewController {
             break
         }
         
+        //dostosowanie wysokości alertu do rozmiaru urządzenia
         let height: NSLayoutConstraint = NSLayoutConstraint(item: dateChooserAlert.view!, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.1, constant: 300)
         dateChooserAlert.view.addConstraint(height)
         
@@ -97,9 +103,10 @@ class CurrencyTableViewController: UITableViewController {
         
     }
     
+    //pobranie danych z serwera dla określonego przedziału
     func getData(fromDate: String, toDate: String) {
         
-        let url = URL(string: "http://api.nbp.pl/api/exchangerates/rates/\(table!)/\(code!)/\(fromDate)/\(toDate)")
+        let url = URL(string: "http://api.nbp.pl/api/exchangerates/rates/\(tableLetter!)/\(currencyCode!)/\(fromDate)/\(toDate)")
         URLSession.shared.dataTask(with:url!, completionHandler: {(data, response, error) in
             guard let data = data, error == nil else { return }
 
@@ -127,19 +134,17 @@ class CurrencyTableViewController: UITableViewController {
                     self.alert(message: resp)
                 }
             }
-
         }).resume()
-        
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
         if let rateDetails = currencyTable?.rates[indexPath.row] {
-            if table == "C" {
+            if tableLetter == "C" {
                 cell.textLabel?.text = rateDetails.effectiveDate
-                cell.detailTextLabel?.text = "1 \(code!) = BID: \(rateDetails.bid!) PLN, ASK: \(rateDetails.ask!) PLN"
+                cell.detailTextLabel?.text = "1 \(currencyCode!) = BID: \(rateDetails.bid!) PLN, ASK: \(rateDetails.ask!) PLN"
             } else {
-                cell.detailTextLabel?.text = "1 \(code!) = \(rateDetails.mid!) PLN"
+                cell.detailTextLabel?.text = "1 \(currencyCode!) = \(rateDetails.mid!) PLN"
                 cell.textLabel?.text = rateDetails.effectiveDate
             }
             

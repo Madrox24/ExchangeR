@@ -240,7 +240,7 @@
                     </refreshControl>
                     <connections>
                         <outlet property="tableSegmentControl" destination="5Tc-HE-uL0" id="E3h-fX-Ark"/>
-                        <outlet property="updatedLabel" destination="8rL-zs-fhF" id="eAw-fC-vNG"/>
+                        <outlet property="whenUpdatedLabel" destination="8rL-zs-fhF" id="eAw-fC-vNG"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CCn-Fo-5df" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
