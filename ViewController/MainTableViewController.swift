@@ -96,6 +96,9 @@ class MainTableViewController: UITableViewController {
     func getDataFromTable(type: String) {
         
         let url = URL(string: "http://api.nbp.pl/api/exchangerates/tables/\(type)")
+        
+        showLoadingSpinner()
+        
         URLSession.shared.dataTask(with:url!, completionHandler: {(data, response, error) in
             guard let data = data, error == nil else { return }
 
@@ -108,6 +111,9 @@ class MainTableViewController: UITableViewController {
                     //odświeżenie tablicy nastąpi dopiero po całkowitym pobraniu danych z serwera
                     self.currencyTable = table
                     self.tableView.reloadData()
+                    
+                    //zamknięcie okna ładowania
+                    if let vc = self.presentedViewController, vc is UIAlertController { self.dismiss(animated: false, completion: nil) }
                 }
             } catch let error {
                 print(error)

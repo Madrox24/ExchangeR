@@ -107,6 +107,9 @@ class CurrencyTableViewController: UITableViewController {
     func getData(fromDate: String, toDate: String) {
         
         let url = URL(string: "http://api.nbp.pl/api/exchangerates/rates/\(tableLetter!)/\(currencyCode!)/\(fromDate)/\(toDate)")
+        
+        showLoadingSpinner()
+        
         URLSession.shared.dataTask(with:url!, completionHandler: {(data, response, error) in
             guard let data = data, error == nil else { return }
 
@@ -118,10 +121,14 @@ class CurrencyTableViewController: UITableViewController {
                 DispatchQueue.main.async {
                     self.currencyTable = table
                     self.tableView.reloadData()
+                    
+                    //zamknięcie okna ładowania
+                    if let vc = self.presentedViewController, vc is UIAlertController { self.dismiss(animated: false, completion: nil) }
                 }
                 
             } catch let error {
                 print(error)
+                
                 if let httpResponse = response as? HTTPURLResponse {
                     var resp = ""
                     if httpResponse.statusCode == 404 {
@@ -131,7 +138,13 @@ class CurrencyTableViewController: UITableViewController {
                     } else {
                         resp = "Unknown error"
                     }
-                    self.alert(message: resp)
+                    
+                    //najpierw należy zamknąć alert ładowania, aby móc wyświetlić info o błędzie
+                    if let vc = self.presentedViewController, vc is UIAlertController { self.dismiss(animated: false) { () -> Void in
+
+                        self.alert(message: resp)
+                    } }
+
                 }
             }
         }).resume()
