@@ -39,7 +39,7 @@ class MainTableViewController: UITableViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
-        if segue.identifier == "currencyDetails" {
+        if segue.identifier == "currencyDetailsTableAB" || segue.identifier == "currencyDetailsTableC" {
             if let indexPath = tableView.indexPathForSelectedRow {
                 let destinationController = segue.destination as! CurrencyTableViewController
                 

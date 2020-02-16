@@ -131,7 +131,7 @@
                                     <outlet property="midValue" destination="yxs-U3-0Yd" id="X4R-QE-li9"/>
                                     <outlet property="name" destination="1nL-vM-PAf" id="zUI-iF-Gjc"/>
                                     <outlet property="roundedView" destination="1Qy-E6-VLD" id="HyU-rb-4z1"/>
-                                    <segue destination="HWW-74-Cnm" kind="show" identifier="currencyDetails" id="MDP-GZ-1iz"/>
+                                    <segue destination="HWW-74-Cnm" kind="show" identifier="currencyDetailsTableAB" id="MDP-GZ-1iz"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="SegmentC" rowHeight="85" id="0ba-Mk-8Gb" customClass="SegmentCTableViewCell" customModule="ExchangeR" customModuleProvider="target">
@@ -224,6 +224,7 @@
                                     <outlet property="codeBG" destination="wjD-68-5Y8" id="mXn-ry-m9n"/>
                                     <outlet property="name" destination="YUX-zy-EPh" id="uvl-0G-jua"/>
                                     <outlet property="roundedView" destination="Eg4-gS-6p4" id="gSu-Gv-lfD"/>
+                                    <segue destination="HWW-74-Cnm" kind="show" identifier="currencyDetailsTableC" id="TDg-Gq-Ofd"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -397,4 +398,7 @@
             <point key="canvasLocation" x="132" y="101"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="TDg-Gq-Ofd"/>
+    </inferredMetricsTieBreakers>
 </document>

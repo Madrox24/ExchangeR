@@ -135,8 +135,14 @@ class CurrencyTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
         if let rateDetails = currencyTable?.rates[indexPath.row] {
-            cell.textLabel?.text = "1 \(code!) = \(rateDetails.mid) PLN"
-            cell.detailTextLabel?.text = rateDetails.effectiveDate
+            if table == "C" {
+                cell.textLabel?.text = rateDetails.effectiveDate
+                cell.detailTextLabel?.text = "1 \(code!) = BID: \(rateDetails.bid!) PLN, ASK: \(rateDetails.ask!) PLN"
+            } else {
+                cell.detailTextLabel?.text = "1 \(code!) = \(rateDetails.mid!) PLN"
+                cell.textLabel?.text = rateDetails.effectiveDate
+            }
+            
             cell.detailTextLabel?.textColor = .gray
         }
         return cell
