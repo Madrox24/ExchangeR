@@ -266,7 +266,7 @@
         <scene sceneID="eil-PF-qPl">
             <objects>
                 <tableViewController id="HWW-74-Cnm" customClass="CurrencyTableViewController" customModule="ExchangeR" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="itc-WA-vd9">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="itc-WA-vd9">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -364,6 +364,9 @@
                                                     <integer key="value" value="10"/>
                                                 </userDefinedRuntimeAttribute>
                                             </userDefinedRuntimeAttributes>
+                                            <connections>
+                                                <action selector="didTapShowResults:" destination="HWW-74-Cnm" eventType="touchUpInside" id="Ec4-pg-fIe"/>
+                                            </connections>
                                         </button>
                                     </subviews>
                                 </stackView>
@@ -383,6 +386,8 @@
                     </tableView>
                     <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="aDI-ny-ScS"/>
                     <connections>
+                        <outlet property="endDateLabel" destination="Y4W-gI-pkf" id="WL5-K3-ybr"/>
+                        <outlet property="endDatePickerView" destination="MIN-WV-jPD" id="U7S-Gv-TM4"/>
                         <outlet property="startDateLabel" destination="mId-TS-v5X" id="Bfu-qL-zUc"/>
                         <outlet property="startDatePickerView" destination="saX-Xp-mn8" id="JsN-gE-sJi"/>
                     </connections>

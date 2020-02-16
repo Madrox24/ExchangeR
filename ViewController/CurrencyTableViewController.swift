@@ -17,48 +17,64 @@ class CurrencyTableViewController: UITableViewController {
     
     let startDatePicker = UIDatePicker()
     let endDatePicker = UIDatePicker()
-
-    @IBOutlet weak var startDateButton: UIButton!
-    @IBOutlet weak var endDateButton: UIButton!
     
+    @IBOutlet weak var startDatePickerView: UIView!
+    @IBOutlet weak var startDateLabel: UILabel!
+    
+    @IBOutlet weak var endDatePickerView: UIView!
+    @IBOutlet weak var endDateLabel: UILabel!
+    
+    let dateFormatter = DateFormatter()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = currencyName
 
+        dateFormatter.dateFormat = "yyyy-MM-dd"
         getData(fromDate: "2020-02-07", toDate: "2020-02-14")
         
-        startDatePicker.maximumDate = Date()
         startDatePicker.datePickerMode = .date
-        endDatePicker.maximumDate = Date()
-        endDatePicker.datePickerMode = .date
+        
+        let startDateTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapDate(_:)))
+        startDatePickerView.addGestureRecognizer(startDateTapGesture)
+        let endDateTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapDate(_:)))
+        endDatePickerView.addGestureRecognizer(endDateTapGesture)
     }
     
-    @IBAction func didTapStartDate(_ sender: UIButton) {
-
-        let dateChooserAlert = UIAlertController(title: "Choose date", message: nil, preferredStyle: .actionSheet)
+    @IBAction func didTapShowResults(_ sender: Any) {
+        print("OK")
+    }
+    
+    @objc func didTapDate(_ sender: UITapGestureRecognizer? = nil) {
         
-        switch sender.tag {
+        let dateChooserAlert = UIAlertController(title: "Choose date", message: nil, preferredStyle: .actionSheet)
+
+        switch sender?.view?.tag {
         case 1:
             dateChooserAlert.view.addSubview(startDatePicker)
             dateChooserAlert.addAction(UIAlertAction(title: "Done", style: .cancel, handler: { action in
-                self.startDateButton.titleLabel?.text = "From: \(self.startDatePicker.date)"
+                
+                let dateString = self.dateFormatter.string(from: self.startDatePicker.date)
+                self.startDateLabel.text = "From: \(dateString)"
+                
             }))
         case 2:
             dateChooserAlert.view.addSubview(endDatePicker)
-            endDatePicker.minimumDate = startDatePicker.date
             dateChooserAlert.addAction(UIAlertAction(title: "Done", style: .cancel, handler: { action in
-                self.endDateButton.titleLabel?.text = "To: \(self.endDatePicker.date)"
+                
+                let dateString = self.dateFormatter.string(from: self.endDatePicker.date)
+                self.endDateLabel.text = "To: \(dateString)"
+                
             }))
         default:
             break
         }
         
-        let height: NSLayoutConstraint = NSLayoutConstraint(item: dateChooserAlert.view, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.1, constant: 300)
+        let height: NSLayoutConstraint = NSLayoutConstraint(item: dateChooserAlert.view!, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.1, constant: 300)
         dateChooserAlert.view.addConstraint(height)
         self.present(dateChooserAlert, animated: true, completion: nil)
+        
     }
-    
     
     func getData(fromDate: String, toDate: String) {
         
